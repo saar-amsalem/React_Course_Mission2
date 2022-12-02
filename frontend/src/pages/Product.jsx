@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
+import { getProductById } from '../apiCalls';
 
 const Container = styled.div``;
 
@@ -64,11 +65,9 @@ const navigate = useNavigate()
 const id = window.location.pathname.split("/")[1]
   useEffect(()=>{
     async function FD() {
-
-      const res = await axios.get('https://dummyjson.com/products/'+id)
-      console.log(res.data.products);
-      setProduct(res.data)
-      setImages(res.data.images)
+      const res = await getProductById(id)
+      setProduct(res)
+      setImages(res.images)
     }
     FD()
   },[])
