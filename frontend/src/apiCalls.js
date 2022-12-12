@@ -22,3 +22,7 @@ export const getCart = async (id) => {
     console.log(res.data);
     return res
 }
+
+export const updateUser = async(data)=> {
+    return await (await axios.post("http://localhost:3001/user",data)).data
+}

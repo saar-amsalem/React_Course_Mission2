@@ -4,6 +4,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const Product = require('./Models/Product')
 const Cart = require('./Models/Cart')
+const User = require("./Models/User")
 const dotenv = require('dotenv');
 dotenv.config()
 
@@ -53,6 +54,12 @@ app.put("/cart/add",async (req,res) => {
 app.get("/cart/:id",async (req,res)=>{
     const response = await Cart.findById(mongoose.Types.ObjectId(req.params.id))
     console.log(response);
+    res.send(response)
+})
+
+app.post("/user",async (req,res)=> {
+    const user = req.body
+    const response = await User.collection.insertOne(user)
     res.send(response)
 })
 

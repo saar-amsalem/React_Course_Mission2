@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getCart, updateCartToDB } from "../apiCalls";
+import { getCart, updateCartToDB, updateUser } from "../apiCalls";
 
 
 
@@ -160,7 +160,9 @@ const Button = styled.button`
 const Cart = () => {
     const navigate = useNavigate()
     const [cart,setCart] = useState({})
+    const [user, setUser] = useState({})
     const params = useParams()
+
     const clearHandler = async () => {
         const temp = {
             _id: cart._id,
@@ -170,6 +172,18 @@ const Cart = () => {
         }
         await updateCartToDB(temp)
         window.location.reload()
+    }
+
+    const clickHandler = async()=> {
+      Object.entries(user).forEach(([key,val])=> {
+        if (val == null)
+        {
+          alert("Please enter " + key)
+          return
+        }
+      })
+      const res = await updateUser(user)
+      console.log(res);
     }
 
 
@@ -236,8 +250,20 @@ const Cart = () => {
               <SummaryItemPrice>$ {cart.totalprice}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
-                <Button>
-                    Pay
+              <SummaryItemText>First Name :</SummaryItemText>
+              <input type={"text"} placeholder="enter your first name" onChange={(e)=>setUser({...user, name: e.target.value})}></input>
+            </SummaryItem>
+            <SummaryItem>
+              <SummaryItemText>Last Name :</SummaryItemText>
+              <input type={"text"} placeholder="enter your last name" onChange={(e)=>setUser({...user, last_name: e.target.value})}></input>
+            </SummaryItem>
+            <SummaryItem>
+              <SummaryItemText>Shipping Adress :</SummaryItemText>
+              <input type={"text"} placeholder="enter your adress" onChange={(e)=>setUser({...user, adress: e.target.value})}></input>
+            </SummaryItem>
+            <SummaryItem>
+                <Button onClick={clickHandler}>
+                    Pay And Ship
                 </Button>
             </SummaryItem>
           </Summary>
